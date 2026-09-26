@@ -1,0 +1,43 @@
+#!/bin/bash
+while true; do
+clear
+echo "======================================"
+echo " Administration des comptes"
+echo "======================================"
+echo "1. Lister les comptes"
+echo "2. Afficher le nombre de comptes"
+echo "3. Afficher les informations du compte courant"
+echo "4. Afficher les informations d'un autre compte"
+echo "5. Quitter"
+echo -n "Choix : "
+read choix
+case $choix in
+1)
+echo "---- Liste des comptes ----"
+cat /etc/passwd
+;;
+2)
+echo "---- Nombre de comptes ----"
+wc -l /etc/passwd
+;;
+3)
+echo "---- Compte courant ----"
+grep -w $(whoami) /etc/passwd
+;;
+4)
+echo -n "Entrez le nom de l'utilisateur : "
+read user
+grep -w $user /etc/passwd || echo "Utilisateur introuvable"
+;;
+5)
+echo "Au revoir"
+exit 0
+;;
+*)
+echo "Choix invalide"
+;;
+esac
+echo ""
+echo "Appuyez sur Entrée pour continuer..."
+read
+done
