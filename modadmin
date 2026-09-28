@@ -1,0 +1,53 @@
+#!/bin/bash
+while true; do
+clear
+echo "======================================"
+echo " Administration des modules"
+echo "======================================"
+echo "1- Lister les modules"
+echo "2- Insérer un module (modprobe)"
+echo "3- Insérer un module (insmod)"
+echo "4- Supprimer un module (modprobe -r)"
+echo "5- Supprimer un module (rmmod)"
+echo "6- Quitter"
+echo ""
+echo "Donner votre choix"
+read choix
+echo "tu as choisi : $choix"
+case $choix in
+1)
+lsmod | awk 'NR>1 {print $1}' | while read name reste
+do
+description=$(modinfo -F description "$name" 2>/dev/null)
+printf "%-20s %s\n" "$name" "$description"
+done
+;;
+2)
+echo -n "Donner le nom du module à insérer : "
+read module
+sudo modprobe "$module"
+;;
+3)
+echo -n "Donner le chemin complet du fichier .ko à insérer (insmod) : "
+read fichier
+sudo insmod "$fichier"
+;;
+4)
+echo -n "Donner le nom du module à supprimer : "
+read module
+sudo modprobe -r "$module"
+;;
+5)
+echo -n "Donner le nom du module à supprimer (rmmod) : "
+read module
+sudo rmmod "$module"
+;;
+6)
+echo "Au revoir!"
+exit 0
+;;
+esac
+echo ""
+echo "Appuyez sur Entrée pour continuer..."
+read
+done
